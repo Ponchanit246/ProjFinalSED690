@@ -7,7 +7,6 @@ from facenet_pytorch import MTCNN, InceptionResnetV1
 import torch
 import cv2
 import mediapipe as mp
-from google.colab import drive
 import os
 from pathlib import Path
 import streamlit as st
@@ -55,8 +54,7 @@ def load_members_embeddings(member_dir):
 def main():
     st.title("GesSure: ตรวจใบหน้าและนับนิ้วมือ")
 
-    # 🔗 เชื่อม Google Drive
-    member_dir = '/content/drive/MyDrive/gesSure/face_member'  # ชี้ไปยังโฟลเดอร์ใน Google Drive
+    member_dir = 'face_member'
     member_embeddings = load_members_embeddings(member_dir)
 
     uploaded_file = st.file_uploader("📤 อัปโหลดภาพใบหน้าเพื่อตรวจสอบสมาชิก")
