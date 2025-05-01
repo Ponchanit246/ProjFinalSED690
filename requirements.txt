@@ -1,5 +1,8 @@
 streamlit==1.32.2
-torch==2.2.1
+torch==2.0.1+cpu
+torchvision==0.15.2+cpu
+torchaudio==2.0.2+cpu
+-f https://download.pytorch.org/whl/torch_stable.html
 facenet-pytorch==2.5.2
 opencv-python-headless==4.8.0.76
 mediapipe==0.9.3
