@@ -5,7 +5,7 @@ import numpy as np
 import cv2
 from facenet_pytorch import MTCNN, InceptionResnetV1
 from sklearn.metrics.pairwise import cosine_similarity
-import pickle
+import joblib
 import mediapipe as mp
 
 # เตรียมโมเดล
@@ -14,7 +14,7 @@ mtcnn = MTCNN(image_size=160, margin=0, device=device)
 resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 
 with open("face_svm_model.pkl", "rb") as f:
-    face_model = pickle.load(f)
+    face_model = joblib.load("face_svm_model.pkl")
 
 # ฟังก์ชันฝั่งนับนิ้วแบบใช้ landmark
 def count_fingers(landmarks):
