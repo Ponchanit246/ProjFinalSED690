@@ -89,7 +89,7 @@ if face_file:
                             mp_drawing.DrawingSpec(color=(0, 255, 0), thickness=2, circle_radius=3),
                             mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2)
                         )
-                        st.image(annotated_img, caption=f"{count} Fingers", use_column_width=True)
+                        st.image(annotated_img, caption=f"{count} Fingers", use_container_width=True)
                 else:
                     st.warning("❌ ไม่พบมือในภาพ")
     else:
