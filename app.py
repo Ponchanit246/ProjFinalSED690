@@ -51,12 +51,12 @@ def count_fingers(landmarks):
 
     count = 0
     for tip, mcp in zip(fingers, mcp_ids):
-        angle = vector_angle(landmarks[mcp], landmarks[mcp + 1], landmarks[tip])
+        angle = vector_angle(landmarks.landmark[mcp], landmarks.landmark[mcp + 1], landmarks.landmark[tip])
         if angle < 160:  # ถ้ามุมแหลม แสดงว่านิ้วเหยียดตรง
             count += 1
 
     # ตรวจนิ้วโป้งแยก
-    angle_thumb = vector_angle(landmarks[2], landmarks[3], landmarks[4])
+    angle_thumb = vector_angle(landmarks.landmark[2], landmarks.landmark[3], landmarks.landmark[4])
     if angle_thumb < 160:
         count += 1
 
@@ -80,7 +80,7 @@ st.title("GESSURE: ยืนยันใบหน้า + ตรวจนิ้�
 face_file = st.file_uploader("📤 อัปโหลดภาพใบหน้า (jpg/png)", type=["jpg", "jpeg", "png"])
 if face_file:
     face_img = Image.open(face_file).convert("RGB")
-    st.image(face_img, caption="Uploaded Face", use_column_width=True)
+    st.image(face_img, caption="Uploaded Face", use_container_width=True)
 
     name, sim = verify_face(face_img, members)
     if name:
