@@ -17,7 +17,7 @@ resnet = InceptionResnetV1(pretrained='vggface2').eval().to(device)
 @st.cache_resource
 def load_member_embeddings(member_dir):
     embeddings = []
-    for img_path in Path(member_dir).glob("*.jpg"):
+    for img_path in Path("face_member").glob("*.jpg"):
         name = img_path.stem.split("_")[0]
         img = Image.open(img_path).convert("RGB")
         face = mtcnn(img)
