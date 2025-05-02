@@ -7,7 +7,6 @@ from PIL import Image
 import cv2
 import mediapipe as mp
 from pathlib import Path
-import math
 
 # ------------------ SETUP ------------------
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -30,37 +29,19 @@ def load_member_embeddings(member_dir):
 members = load_member_embeddings("face_member")
 
 # ------------------ FINGER COUNT ------------------
-def vector_angle(a, b, c):
-    """คำนวณมุมที่จุด b ระหว่าง a-b-c"""
-    ba = [a.x - b.x, a.y - b.y]
-    bc = [c.x - b.x, c.y - b.y]
-
-    dot_product = ba[0]*bc[0] + ba[1]*bc[1]
-    mag_ba = math.sqrt(ba[0]**2 + ba[1]**2)
-    mag_bc = math.sqrt(bc[0]**2 + bc[1]**2)
-    if mag_ba * mag_bc == 0:
-        return 0
-    cosine = dot_product / (mag_ba * mag_bc)
-    angle = math.acos(min(1, max(-1, cosine)))  # กัน NaN
-    return math.degrees(angle)
-    
-def count_fingers(landmarks):
-    # Indices ของข้อนิ้วกลางแต่ละนิ้ว
-    fingers = [8, 12, 16, 20]  # นิ้วชี้ถึงก้อย
-    mcp_ids = [5, 9, 13, 17]   # โคนแต่ละนิ้ว
-
-    count = 0
-    for tip, mcp in zip(fingers, mcp_ids):
-        angle = vector_angle(landmarks.landmark[mcp], landmarks.landmark[mcp + 1], landmarks.landmark[tip])
-        if angle < 160:  # ถ้ามุมแหลม แสดงว่านิ้วเหยียดตรง
-            count += 1
-
-    # ตรวจนิ้วโป้งแยก
-    angle_thumb = vector_angle(landmarks.landmark[2], landmarks.landmark[3], landmarks.landmark[4])
-    if angle_thumb < 160:
-        count += 1
-
-    return count
+def count_fingers(lm):
+    tips_ids = [4, 8, 12, 16, 20]
+    fingers = []
+    if lm.landmark[tips_ids[0]].x < lm.landmark[tips_ids[0] - 1].x:
+        fingers.append(1)
+    else:
+        fingers.append(0)
+    for i in range(1, 5):
+        if lm.landmark[tips_ids[i]].y < lm.landmark[tips_ids[i] - 2].y:
+            fingers.append(1)
+        else:
+            fingers.append(0)
+    return sum(fingers)
 
 # ------------------ FACE VERIFY ------------------
 def verify_face(pil_image, members, threshold=0.80):
