@@ -76,8 +76,8 @@ if face_file:
                         annotated_img = rgb.copy()
                         mp_drawing.draw_landmarks(
                             annotated_img, hand_landmarks, mp_hands.HAND_CONNECTIONS,
-                            mp_drawing.DrawingSpec(color=(255, 0, 255), thickness=2, circle_radius=3),
-                            mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=2)
+                            mp_drawing.DrawingSpec(color=(255, 0, 255), thickness=5, circle_radius=5),
+                            mp_drawing.DrawingSpec(color=(255, 255, 255), thickness=5)
                         )
                         st.image(annotated_img, caption=f"{count} Fingers", use_column_width=True)
                 else:
